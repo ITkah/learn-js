@@ -1,17 +1,17 @@
 // 1. Inline in html tags, <script>console.log('test')</script>, <script src="common.js"></script>
 
 // 2. Number 
-let num = 10;
+const num = 10;
 
 //3.
-let MyPhone = "Iphone 11";
+const myPhone = "Iphone 11";
 
 //4.
-let test = undefined;
+const test = undefined;
 console.log(test);
 
 //5
-let nullTest =  null;
+const nullTest =  null;
 console.log(typeof nullTest); // object
 
 //6. true/false
@@ -19,37 +19,52 @@ console.log(typeof nullTest); // object
 //7. Camel Case, in English
 
 //8. 
-let firstName = 'Ilya';
-alert(firstName);
+const firstName = 'Ilya';
+//alert(firstName);
 
 //9. 
-let myFavoriteFilm = 'Limitless'
-console.log('My favorite film is ' + myFavoriteFilm);
+const myFavoriteFilm = 'Limitless'
+console.log(`My favorite film is ${myFavoriteFilm}. What about your favorite film?`);
 
 //10 
-let developer = true;
+const isDeveloper = true;
 
 //11 alert();, prompt(), confirm()
 
 //12
-prompt("What kind of dog do you have?");
+//prompt("What kind of dog do you have?");
 
 //13 
-let width = 5,
+const width = 5,
     height = 10;
 
-let area = width * height;
+const area = width * height;
 console.log(area);
 
 //14
-let first = "Hello",
+const first = "Hello",
     second = "World";
 
 console.log(first + " " + second);
 
 //15 
-let a = Number(prompt("Введи перше число")),
-    b = Number(prompt("Введи друге число"));
+//const a = Number(prompt("Введи перше число"));
+//const b = Number(prompt("Введи друге число"));
 
-let sum = a + b;
-alert(sum);
+//const sum = a + b;
+//alert(sum);
+
+const userData = {
+    name: "John",
+    age: 30,
+    isAdmin: false,
+    courses: ["html", "css", "js"],
+    wife: null
+};
+
+console.log(userData.name);
+
+userData.name = 'Doe';
+
+console.log(userData.name);
+ // Error: Assignment to constant variable.

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form action="#" class="form-task-14" method="post" style="margin-bottom: 25px;">
+        <p>Task 14</p>
+        <input placeholder="mail" class="mail" type="email">
+        <input placeholder="password" class="password" type="password">
+        <button type="submit">Send</button>
+        <p class="error"></p>
+    </form>
+
+    <form action="#" class="form-task-15" method="post" style="margin-bottom: 15px;">
+        <p>Task 15</p>
+        <input type="text" placeholder="How old are you?" class="age">
+        <button type="submit">Send</button>
+        <p class="error"></p>
+    </form>
+    
+    <form action="#" class="form-task-16 method="post" style="margin-bottom: 15px;">
+        <p>Task 16</p>
+        <input type="text" placeholder="Num first" class="numPositiveFirst">
+        <input type="text" placeholder="Num second" class="numPositiveSecond">
+        <button type="submit">Send</button>
+        <p class="error"></p>
+    </form>
+
+
+
+    <script>
+        //1 operand element being worked on
+        //2 const name = 'Ilya';
+            //let const = `Hello ${name}`;
+        //3 const num = +"10"; or number("10");
+        //4 const x = 5;
+        //5 inkrement ++ and dekrement --
+        //6 =, ==, ===, !=, !==, >, <, >=, <= 
+        //7 console.log(6 > 3) true
+        //8 console.log(6 = 3) warning
+        //9 console.log(6 > 3) true
+        //10 !== and != 
+        //11 console.log(5 === ‘5’); Uncaught SyntaxError: Invalid or unexpected token 
+        //12 A remainder is what remains when one number is not exactly divisible by another.
+        //13 console.log(5 % 2) 1
+    
+
+        //task 14
+        const form14 = document.querySelector('.form-task-14');
+        const mailInput14 = form14.querySelector('.form-task-14 .mail');
+        const passwordInput14 = form14.querySelector('.form-task-14 .password');
+        const errorLabel = form14.querySelector('.form-task-14 .error');
+
+        form14.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const mail = mailInput14.value;
+            const password = passwordInput14.value;
+
+            if (mail === '' || password === '') {
+                errorLabel.textContent = 'All fields are required';
+            } else {
+                errorLabel.textContent = '';
+                alert('Form submitted');
+            }
+        });
+
+        //task 15
+        const form15 = document.querySelector('.form-task-15');
+        const ageInput15 = form15.querySelector('.form-task-15 .age');
+        const errorLabel15 = form15.querySelector('.form-task-15 .error');
+
+        form15.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const age = ageInput15.value;
+
+            if (age > 18 && age < 65) {
+                errorLabel15.textContent = '';
+                alert('Access granted');
+            } else {
+                errorLabel15.textContent = 'Access denied';
+            }
+        });
+
+        //task 16
+        const form16 = document.querySelector('.form-task-16');
+        const numInput16 = form16.querySelector('.form-task-16 .numPositiveFirst');
+        const numInputSecond16 = form16.querySelector('.form-task-16 .numPositiveSecond');
+        const errorLabel16 = form16.querySelector('.form-task-16 .error');     
+
+        form16.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const numFirst = numInput16.value;
+            const numSecond = numInputSecond16.value;
+
+            if (numFirst > 0 && numSecond > 0) {
+                errorLabel16.textContent = '';
+                alert('Valid numbers');
+            } else if (numFirst > 0 || numSecond > 0) {
+                errorLabel16.textContent = 'one number is positive';
+            } else {
+                errorLabel16.textContent = 'none number is positive';
+            }
+        });
+
+        // I decided to skip typical tasks 
+
+
+    </script>
+</body>
+</html>
