@@ -22,7 +22,7 @@
         <p class="error"></p>
     </form>
     
-    <form action="#" class="form-task-16 method="post" style="margin-bottom: 15px;">
+    <form action="#" class="form-task-16" method="post" style="margin-bottom: 15px;">
         <p>Task 16</p>
         <input type="text" placeholder="Num first" class="numPositiveFirst">
         <input type="text" placeholder="Num second" class="numPositiveSecond">
@@ -30,7 +30,17 @@
         <p class="error"></p>
     </form>
 
-
+    <form action="#" class="form-task-23" method="post">
+        <p>Task 23</p>
+        <select class="wether">
+            <option value="sunny">sunny</option>
+            <option value="cloudy">cloudy</option>
+            <option value="rainy">rainy</option>
+            <option value="snowy">snowy</option>
+        </select>
+        <button type="submit">Send</button>
+        <p class="error"></p>
+    </form>
 
     <script>
         //1 operand element being worked on
@@ -109,8 +119,33 @@
             }
         });
 
-        // I decided to skip typical tasks 
 
+        //23
+
+        const form23 = document.querySelector('.form-task-23');
+        const wetherInput23 = form23.querySelector('.form-task-23 .wether');
+        const errorLabel23 = form23.querySelector('.form-task-23 .error');
+
+        form23.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const wether = wetherInput23.value;
+
+            if (wether === 'sunny') {
+                errorLabel23.textContent = 'It is a sunny day';
+            } else if (wether === 'cloudy') {
+                errorLabel23.textContent = 'It is cloudy';
+            } else if (wether === 'rainy') {
+                errorLabel23.textContent = 'It is rainy';
+            } else if (wether === 'snowy') {
+                errorLabel23.textContent = 'It is snowy';
+            } else {
+                errorLabel23.textContent = 'Unknown weather condition.';
+            }
+
+        });
+
+        // I decided to skip typical tasks 
 
     </script>
 </body>
