@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    
+
     <form action="#" class="form-task-14" method="post" style="margin-bottom: 25px;">
         <p>Task 14</p>
         <input placeholder="mail" class="mail" type="email">
@@ -21,11 +21,11 @@
         <button type="submit">Send</button>
         <p class="error"></p>
     </form>
-    
+
     <form action="#" class="form-task-16" method="post" style="margin-bottom: 15px;">
         <p>Task 16</p>
-        <input type="text" placeholder="Num first" class="numPositiveFirst">
-        <input type="text" placeholder="Num second" class="numPositiveSecond">
+        <input type="number" placeholder="Num first" class="numPositiveFirst">
+        <input type="number" placeholder="Num second" class="numPositiveSecond">
         <button type="submit">Send</button>
         <p class="error"></p>
     </form>
@@ -43,106 +43,124 @@
     </form>
 
     <script>
+      function submitForm (event) {
+        const ageInput15 = form15.querySelector('.form-task-15 .age');
+        const errorLabel15 = form15.querySelector('.form-task-15 .error');
+
+        event.preventDefault();
+
+        const age = ageInput15.value;
+        errorHandler(errorLabel15)
+
+
+
+        age > 18 && age < 65 ? successHandler('Access granted') : errorHandler(errorLabel15, 'Access denied') ; // TODO Краще винести в окремі методи
+      }
+
+      function successHandler (successMessage = '') {
+        if (!successMessage?.length) return
+
+        alert(successMessage)
+      }
+
+      function errorHandler (errorLabel = null, errorMessage = '') {
+        if (!errorLabel) return;
+
+        errorLabel.textContent = errorMessage
+      }
+
+      function setEventListener (form, event, callback) {
+        if (!form || !event || !callback) return;
+        form.addEventListener(event, callback);
+      }
+
+      function getElementByQuerySelector (element = document, selector) {
+        return element.querySelector(selector);
+      }
+
+
         //1 operand element being worked on
         //2 const name = 'Ilya';
         //3 const = `Hello ${name}`;
         //3 const num = +"10"; or number("10");
         //4 const x = 5;
         //5 inkrement ++ and dekrement --
-        //6 ==, ===, !=, !==, >, <, >=, <= 
+        //6 ==, ===, !=, !==, >, <, >=, <=
         //7 console.log(6 > 3) true
         //8 console.log(6 = 3) warning
         //9 console.log(6 > 3) true
-        //10 !== and != 
-        //11 console.log(5 === ‘5’); Uncaught SyntaxError: Invalid or unexpected token 
+        //10 !== and !=
+        //11 console.log(5 === ‘5’); Uncaught SyntaxError: Invalid or unexpected token TODO тут саме порівняння 5 === '5'
         //12 A remainder is what remains when one number is not exactly divisible by another.
         //13 console.log(5 % 2) 1
-    
 
-        //task 14
-        const form14 = document.querySelector('.form-task-14');
-        const mailInput14 = form14.querySelector('.form-task-14 .mail');
-        const passwordInput14 = form14.querySelector('.form-task-14 .password');
-        const errorLabel = form14.querySelector('.form-task-14 .error');
 
-        form14.addEventListener('submit', function (event) {
-            event.preventDefault();
+        //task 14 TODO Безпечніше використовувати id. querySelector - поверне перший знайдений
+        const form14 = getElementByQuerySelector(document, '.form-task-14');
 
-            const mail = mailInput14.value;
-            const password = passwordInput14.value;
+      setEventListener(form14, 'submit', function (event) {
+        const mailInput14 = getElementByQuerySelector(form14, '.form-task-14 .mail'); // TODO Tут барато зайвого, '.form-task-14 .mail' - #mailFormInput
+        const passwordInput14 = getElementByQuerySelector(form14, '.form-task-14 .password');
+        const errorLabel = getElementByQuerySelector(form14, '.form-task-14 .error');
 
-            if (mail === '' || password === '') {
-                errorLabel.textContent = 'All fields are required';
-            } else {
-                errorLabel.textContent = '';
-                alert('Form submitted');
-            }
-        });
+        event.preventDefault();
+        const mail = mailInput14.value;
+        const password = passwordInput14.value;
+        const isFormValidData = mail !== '' && password !== '';
+
+        errorLabel.textContent = isFormValidData ? 'All fields are required' : ''
+        })
 
         //task 15
         const form15 = document.querySelector('.form-task-15');
-        const ageInput15 = form15.querySelector('.form-task-15 .age');
-        const errorLabel15 = form15.querySelector('.form-task-15 .error');
 
-        form15.addEventListener('submit', function (event) {
-            event.preventDefault();
+        setEventListener(form15, 'submit', submitForm)
 
-            const age = ageInput15.value;
 
-            if (age > 18 && age < 65) {
-                errorLabel15.textContent = '';
-                alert('Access granted');
-            } else {
-                errorLabel15.textContent = 'Access denied';
-            }
-        });
 
         //task 16
         const form16 = document.querySelector('.form-task-16');
-        const numInput16 = form16.querySelector('.form-task-16 .numPositiveFirst');
-        const numInputSecond16 = form16.querySelector('.form-task-16 .numPositiveSecond');
-        const errorLabel16 = form16.querySelector('.form-task-16 .error');     
 
-        form16.addEventListener('submit', function (event) {
-            event.preventDefault();
+        setEventListener(form16, 'submit', function (event) {
+          const numInput16 = form16.querySelector('.form-task-16 .numPositiveFirst'); // TODO type number
+          const numInputSecond16 = form16.querySelector('.form-task-16 .numPositiveSecond'); // TODO type number
+          const errorLabel16 = form16.querySelector('.form-task-16 .error');
 
-            const numFirst = numInput16.value;
-            const numSecond = numInputSecond16.value;
+          event.preventDefault();
 
-            if (numFirst > 0 && numSecond > 0) {
-                errorLabel16.textContent = '';
-                alert('Valid numbers');
-            } else if (numFirst > 0 || numSecond > 0) {
-                errorLabel16.textContent = 'one number is positive';
-            } else {
-                errorLabel16.textContent = 'none number is positive';
-            }
-        });
+          const numFirst = numInput16.value;
+          const numSecond = numInputSecond16.value;
+          errorHandler(errorLabel16)
 
+          if (numFirst > 0 && numSecond > 0) {
+            return successHandler('Valid numbers');
+          }
+
+          const errorMessage = numFirst > 0 || numSecond > 0 ? 'one number is positive' : 'none number is positive';
+          errorHandler(errorLabel16, errorMessage)
+        })
+
+        // TODO для error треба було б зробити errorHandler
 
         //task 23
         const form23 = document.querySelector('.form-task-23');
-        const wetherInput23 = form23.querySelector('.form-task-23 .wether');
-        const errorLabel23 = form23.querySelector('.form-task-23 .error');
 
-        form23.addEventListener('submit', function (event) {
-            event.preventDefault();
+        setEventListener(form23, 'submit',  function (event) {
+          const wetherInput23 = form23.querySelector('.form-task-23 .wether');
+          const errorLabel23 = form23.querySelector('.form-task-23 .error');
 
-            const wether = wetherInput23.value;
+          event.preventDefault();
 
-            if (wether === 'sunny') {
-                errorLabel23.textContent = 'It is a sunny day';
-            } else if (wether === 'cloudy') {
-                errorLabel23.textContent = 'It is cloudy';
-            } else if (wether === 'rainy') {
-                errorLabel23.textContent = 'It is rainy';
-            } else if (wether === 'snowy') {
-                errorLabel23.textContent = 'It is snowy';
-            } else {
-                errorLabel23.textContent = 'Unknown weather condition.';
-            }
+          const wether = wetherInput23.value;
 
-        });
+          switch (wether) {
+            case 'sunny': errorHandler(errorLabel23, 'It is a sunny day'); break;
+            case 'cloudy': errorHandler(errorLabel23, 'It is cloudy'); break;
+            case 'rainy': errorHandler(errorLabel23, 'It is rainy'); break;
+            case 'snowy': errorHandler(errorLabel23, 'It is snowy'); break;
+            default: errorHandler(errorLabel23, 'Unknown weather condition.');
+          }
+        })
     </script>
 </body>
 </html>

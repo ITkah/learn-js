@@ -2,7 +2,7 @@
 
 //2 The function body is the code inside the curly braces {} that is executed when the function is called.
 
-//3 
+//3
 function sum(a, b) {
   return a + b;
 }
@@ -10,7 +10,7 @@ const sumSecond = function(a, b) {
   return a + b;
 };
 
-//4 
+//4
 sum(2, 3);
 
 //5 An argument is a value that is passed to a function when it is called.
@@ -40,4 +40,4 @@ rectangleArea(5, 10);
 function collString(str) {
     return str.length
 }
-collString("Hello, world!");
+collString("Hello, world!"); // TODO: Треба вказувати назву функцій так щоб було зрозуміло що корбить код в середині неї
