@@ -29,33 +29,38 @@
       };
 
       for (const keyOfProductCard in productCardCoffeObj) {
-        console.log(
-          "Key type`" +
-            keyOfProductCard +
-            "` Value: " +
-            productCardCoffeObj[keyOfProductCard],
-        );
+        const objectValue = typeof productCardCoffeObj[keyOfProductCard] === 'function' ? productCardCoffeObj[keyOfProductCard]() : productCardCoffeObj[keyOfProductCard]
+
+        console.log(`Key type${keyOfProductCard} Value:${objectValue}`)
       }
 
       //4
-      productCardCoffeObj.price = 250;
+      productCardCoffeObj.price = 250; // TODO: тут ми не міняємо прайс, бо він вже 250. В задачі треба поміняти ключ, а не значення !!!
       console.log("Updated Price: " + productCardCoffeObj.price);
 
       //5
       const subObject = { firstNum: 1, secondNum: 2 };
       console.log("secondNum" in subObject);
+      console.log(Object.keys(subObject).includes("secondNum")); // TODO: Другий спосіб, і заодно приклад використання методів обʼєктів
 
       //6
-      for (const allKeyObj in productCardCoffeObj) {
+      for (const allKeyObj in productCardCoffeObj) { // TODO: тут ти виводиш усе, і властивості(keys) і значення(values)
         console.log(allKeyObj, "=>", productCardCoffeObj[allKeyObj]);
+
+        console.log('#6 New variant №1: ', allKeyObj) // TODO: Цього достатньо
       }
 
+
       console.log(Object.keys(productCardCoffeObj));
+      console.log('#6 New variant №2: ', Object.keys(productCardCoffeObj).join(', '));
+
       console.log(Object.values(productCardCoffeObj));
-      console.log(Object.entries(productCardCoffeObj));
+      for (const [key] of Object.entries(productCardCoffeObj)) {
+        console.log('#6 New variant №3:', `${key}`);
+      }
 
       //7
-      console.log(productCardCoffeObj.getPrice());
+      console.log(productCardCoffeObj.getPrice()); //TODO: ти задав дефолтне значення - 0!!
 
       //8
       const timeClockObj = {
@@ -64,7 +69,7 @@
 
         getCurrentTime() {
           const dateTimeNow = new Date();
-          const hoursNow = String(dateTimeNow.getHours()).padStart(2, "0");
+          const hoursNow = String(dateTimeNow.getHours()).padStart(2, "0"); // TODO: Як працює padStart
           const minutesNow = String(dateTimeNow.getMinutes()).padStart(2, "0");
           const secondsNow = String(dateTimeNow.getSeconds()).padStart(2, "0");
 
@@ -82,7 +87,7 @@
         },
 
         startTimeOutput(selectorIdArgument) {
-          this.selectorTagetId = selectorIdArgument;
+          this.selectorTagetId = selectorIdArgument; //TODO: this.selectorTagetId виглядає як зайва змінна
 
           this.renderTime(this.selectorTagetId);
 
@@ -103,30 +108,38 @@
       const calculatorCustom = {
         defaultValue: 2,
         multiplyOperation(
-          firstNum = this.defaultValue,
+          firstNum = this.defaultValue, // TODO: Для калькулятора потрібно ставити дефолтні значення, треба якшо немає виходити
           secondNum = this.defaultValue,
         ) {
+          if (!firstNum || !secondNum) throw new Error("Not valid input data")
           return Number(firstNum) * Number(secondNum);
         },
         divisionOperation(
           firstNum = this.defaultValue,
           secondNum = this.defaultValue,
         ) {
+          if (!firstNum || !secondNum) throw new Error("Not valid input data")
+
           return Number(firstNum) / Number(secondNum);
         },
         plusOperation(
           firstNum = this.defaultValue,
           secondNum = this.defaultValue,
         ) {
+          if (!firstNum || !secondNum) throw new Error("Not valid input data")
+
           return Number(firstNum) + Number(secondNum);
         },
         minusOperation(
           firstNum = this.defaultValue,
           secondNum = this.defaultValue,
         ) {
+          if (!firstNum || !secondNum) throw new Error("Not valid input data")
+
           return Number(firstNum) - Number(secondNum);
         },
       };
+//TODO: Також не firstNum а firstNumber. Символи безкоштовні, не економимо їх
 
       console.log(calculatorCustom.multiplyOperation(2, 3));
       console.log(calculatorCustom.minusOperation(5, 2));
@@ -135,9 +148,9 @@
       console.log(calculatorCustom.plusOperation());
 
       //10
-      const orderObj = {
+      const order = { // TODO: не скорочуй назви, тут взагалі мождна назвати order
         cartBasketList: [],
-        addItem: function (nameProduct, priceProduct) {
+        addItem: function (nameProduct, priceProduct) { // Бажано писати код в одному стилі, саме ці варіанти технічно однакові, але візуально ріже око
           this.cartBasketList.push({
             nameKey: nameProduct,
             priceKey: priceProduct,
@@ -150,29 +163,31 @@
           });
         },
 
-        getTotalSum: function () {
-          let sumProductAll = 0;
-          for (let i = 0; i < this.cartBasketList.length; i++) {
-            sumProductAll = sumProductAll + this.cartBasketList[i].priceKey;
-          }
-          return sumProductAll;
+        getTotalSum() {
+          return  this.cartBasketList.reduce((acc, valuess) => (acc += valuess.priceKey), 0)
+
+          // let sumProductAll = 0;
+          // for (let i = 0; i < this.cartBasketList.length; i++) {
+          //   sumProductAll = sumProductAll + this.cartBasketList[i].priceKey;
+          // }
+          // return sumProductAll;
         },
       };
 
-      orderObj.addItem("Milk", 50);
-      orderObj.addItem("Bread", 30);
-      orderObj.addItem("Cheese", 80);
+      order.addItem("Milk", 50);
+      order.addItem("Bread", 30);
+      order.addItem("Cheese", 80);
 
-      console.log("Cart:", orderObj.cartBasketList);
+      console.log("Cart:", order.cartBasketList);
       // [{nameKey: "Milk", priceKey: 50}, {nameKey: "Bread", priceKey: 30}, {nameKey: "Cheese", priceKey: 80}]
-      console.log("Total:", orderObj.getTotalSum()); // 160
+      console.log("Total:", order.getTotalSum()); // 160
 
-      orderObj.removeItem("Bread");
+      order.removeItem("Bread");
 
-      console.log("Cart after remove:", orderObj.cartBasketList);
+      console.log("Cart after remove:", order.cartBasketList);
       // [{nameKey: "Milk", priceKey: 50}, {nameKey: "Cheese", priceKey: 80}]
 
-      console.log("Total after remove:", orderObj.getTotalSum());
+      console.log("Total after remove:", order.getTotalSum());
     </script>
   </body>
 </html>
