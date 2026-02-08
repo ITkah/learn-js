@@ -69,7 +69,7 @@ const combinedArray = [...carBMWArray, ...carsToyotaArray];
 //9
 const numbersArray = [1, 2, 3, 4, 5];
 const sumNumbersArray = numbersArray.reduce((a, b) => a + b, 0);
-console.log(sumNumbersArray);
+console.log(sumNumbersArray + 'test');
 
 //10
 const maxNumberArray = Math.max(...numbersArray);
@@ -83,4 +83,4 @@ console.log(positiveNumbersArray);
 
 //12
 const fruitsArray = ['apple', 'banana', 'orange'];
-fruits.includes('orange'); // true
+fruitsArray.includes('orange'); // true
