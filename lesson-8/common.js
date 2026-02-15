@@ -33,8 +33,7 @@ document.querySelectorAll('.highlight').forEach(findedElement => {
 });  
 
 //10
-const box = document.querySelector('div.box');
-if(box) box.classList.add('selected');
+document.querySelector('div.box')?.classList.add('selected');
 
 //11
 document.querySelectorAll('a').forEach(allLinkPage => {
