@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Title</title>
+</head>
+<body>
+
+  <section>
+    <h3>2) Button: show message</h3>
+    <button id="showMessageButton">Show Message</button>
+  </section>
+
+  <section>
+    <h3>3) Add item to the list</h3>
+    <ul id="itemsList">
+      <li>First item</li>
+      <li>Second item</li>
+    </ul>
+    <button id="addListItemButton">Add Item</button>
+  </section>
+
+  <section>
+    <h3>4) Replace text after 3 seconds</h3>
+    <p id="statusText">This is old text</p>
+  </section>
+
+  <section>
+    <h3>5) Change document background color</h3>
+    <button id="toggleBackgroundButton">Change Background</button>
+  </section>
+
+  <section>
+    <h3>6) Insert HTML after paragraph</h3>
+    <p id="referenceParagraph">This is a paragraph</p>
+  </section>
+
+  <section>
+    <h3>7) Change button text after click</h3>
+    <button id="interactiveButton">Click Me</button>
+  </section>
+
+  <section>
+    <h3>8) Change paragraph style on click</h3>
+    <button id="toggleStyleButton">Change Style</button>
+    <p id="styledParagraph">This is a paragraph</p>
+  </section>
+
+  <script>
+    // 1) 
+    document.addEventListener('DOMContentLoaded', () => {
+      alert('Hello! The page has loaded.');
+    });
+
+    // 2) 
+    const showMessageButton = document.querySelector('#showMessageButton');
+
+    showMessageButton.addEventListener('click', () => {
+      alert('This message is from the button!');
+    });
+
+    // 3) 
+    const itemsList = document.querySelector('#itemsList');
+    const addListItemButton = document.querySelector('#addListItemButton');
+
+    addListItemButton.addEventListener('click', () => {
+      const newListItem = document.createElement('li');
+      newListItem.textContent = `New item`;
+      itemsList.appendChild(newListItem);
+    });
+
+    // 4) 
+    const statusTextElement = document.querySelector('#statusText');
+
+    setTimeout(() => {
+      statusTextElement.textContent = 'This is new text';
+    }, 3000);
+
+    // 5) 
+    const toggleBackgroundButton = document.querySelector('#toggleBackgroundButton');
+    let isBackgroundActive = false;
+
+    toggleBackgroundButton.addEventListener('click', () => {
+      isBackgroundActive = !isBackgroundActive;
+      document.body.style.backgroundColor = isBackgroundActive ? '#f0f7ff' : '';
+    });
+
+    // 6) 
+    const referenceParagraph = document.querySelector('#referenceParagraph');
+    referenceParagraph.insertAdjacentHTML('afterend', '<p><a href="#">Test link</a></p>');
+
+    // 7) 
+    const interactiveButton = document.querySelector('#interactiveButton');
+
+    interactiveButton.addEventListener('click', () => {
+      interactiveButton.textContent = 'You clicked me!';
+    });
+
+    // 8) 
+    const toggleStyleButton = document.querySelector('#toggleStyleButton');
+    const styledParagraph = document.querySelector('#styledParagraph');
+
+    let isParagraphStyled = false;
+
+    toggleStyleButton.addEventListener('click', () => {
+      isParagraphStyled = !isParagraphStyled;
+
+      styledParagraph.style.backgroundColor = isParagraphStyled ? '#222' : '';
+      styledParagraph.style.color = isParagraphStyled ? '#fff' : '';
+      styledParagraph.style.padding = isParagraphStyled ? '10px' : '';
+      styledParagraph.style.borderRadius = isParagraphStyled ? '8px' : '';
+    });
+  </script>
+</body>
+</html>
