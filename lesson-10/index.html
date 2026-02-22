@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .highlight {
+        background: yellow;
+      }
+
+      .is-hidden {
+        display: none;
+      }
+      .message-box {
+        padding: 10px 12px;
+        background: #f3f3f3;
+        border-radius: 10px;
+        margin-top: 10px;
+      }
+
+      .text-green {
+        color: green;
+      }
+      .text-blue {
+        color: blue;
+      }
+      .text-red {
+        color: red;
+      }
+
+      .resize-box {
+        width: 160px;
+        height: 90px;
+        background: #e9e9ff;
+        border: 2px solid #7b7bff;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        user-select: none;
+        cursor: pointer;
+
+        transition:
+          width 0.35s ease,
+          height 0.35s ease;
+      }
+
+      .scroll-text {
+        font-size: 18px;
+        padding: 10px 12px;
+        background: #fff7e6;
+        border-radius: 10px;
+        position: sticky;
+        top: 12px;
+        border: 1px solid #ffd38a;
+      }
+
+      .spacer {
+        height: 900px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1 -->
+    <section>
+      <h2>1) Apply styles from object on button click</h2>
+      <button id="btnApplyStyles">Apply Styles</button>
+      <div
+        id="boxStyles"
+        style="margin-top: 10px; padding: 10px; border: 1px dashed #999"
+      >
+        I am the element that will receive styles
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section>
+      <h2>2) Click list items to toggle highlight</h2>
+      <ul id="selectableList">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+        <li>Item 4</li>
+      </ul>
+    </section>
+
+    <!-- 3 -->
+    <section>
+      <h2>3) Resize block randomly with smooth animation</h2>
+      <div id="resizeBox" class="resize-box">Click Me</div>
+      <div style="margin-top: 8px; color: #666; font-size: 13px">
+        Width: 120–320px, Height: 70–200px
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section>
+      <h2>4) Change font size on scroll</h2>
+      <div id="helloScroll" class="scroll-text">Hello world</div>
+      <div class="spacer"></div>
+      <div style="color: #666; font-size: 13px">
+        If scrollY &gt; 200 → 24px, otherwise → 18px.
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section>
+      <h2>5) Show message and hide after 3 seconds</h2>
+      <button id="btnShowMessage">Show Message</button>
+      <div id="messageBox" class="message-box is-hidden">
+        This message will disappear after 3 seconds
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section>
+      <h2>6) Input color → change text color</h2>
+      <input
+        id="colorInput"
+        type="text"
+        placeholder="Example: red or #ff00aa"
+      />
+      <p id="colorTarget" style="margin-top: 10px">My text changes color</p>
+    </section>
+
+    <!-- 7 -->
+    <section>
+      <h2>7) Buttons add color classes</h2>
+      <button data-color="green">Green</button>
+      <button data-color="blue">Blue</button>
+      <button data-color="red">Red</button>
+
+      <p id="coloredParagraph" style="margin-top: 10px">
+        I change color using CSS classes
+      </p>
+    </section>
+
+    <!-- 8 -->
+    <section>
+      <h2>8) Movie object → render to page</h2>
+      <div id="movieInfo"></div>
+    </section>
+
+    <!-- 9 -->
+    <section>
+      <h2>9) Cycle text color from array</h2>
+      <button id="btnNextColor">Next Color</button>
+      <p id="cycleParagraph" style="margin-top: 10px">
+        I change color in sequence
+      </p>
+    </section>
+
+    <script>
+      //1
+      const styles = {
+        backgroundColor: "yellow",
+        border: "2px solid red",
+        borderRadius: "10px",
+      };
+
+      const btnApplyStyles = document.querySelector("#btnApplyStyles");
+      const boxStyles = document.querySelector("#boxStyles");
+
+      btnApplyStyles.addEventListener("click", () => {
+        Object.assign(boxStyles.style, styles);
+      });
+
+      //2
+      const selectableList = document.querySelector("#selectableList");
+
+      selectableList.addEventListener("click", (event) => {
+        console.log(event.target);
+        const item = event.target.closest("li");
+        if (!item) return;
+        item.classList.toggle("highlight");
+      });
+
+      //3
+      const resizeBox = document.querySelector("#resizeBox");
+
+      function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      resizeBox.addEventListener("click", () => {
+        const width = randomInt(120, 320);
+        const height = randomInt(70, 200);
+
+        resizeBox.style.width = width + "px";
+        resizeBox.style.height = height + "px";
+      });
+
+      //4
+      const helloScroll = document.querySelector("#helloScroll");
+
+      function updateFontByScroll() {
+        const scrollPosition = window.scrollY;
+        helloScroll.style.fontSize = scrollPosition > 200 ? "24px" : "18px";
+      }
+
+      updateFontByScroll();
+      window.addEventListener("scroll", updateFontByScroll);
+
+      //5
+
+      const btnShowMessage = document.querySelector("#btnShowMessage");
+      const messageBox = document.querySelector("#messageBox");
+      let hideTimerId = null;
+
+      btnShowMessage.addEventListener("click", () => {
+        messageBox.classList.remove("is-hidden");
+
+        if (hideTimerId) clearTimeout(hideTimerId);
+
+        hideTimerId = setTimeout(() => {
+          messageBox.classList.add("is-hidden");
+          hideTimerId = null;
+        }, 3000);
+      });
+
+      //6
+
+      const colorInput = document.querySelector("#colorInput");
+      const colorTarget = document.querySelector("#colorTarget");
+
+      colorInput.addEventListener("input", () => {
+        colorTarget.style.color = colorInput.value;
+      });
+
+      //7
+
+      const coloredParagraph = document.querySelector("#coloredParagraph");
+      const colorButtons = document.querySelectorAll(
+        "section:nth-of-type(7) button",
+      );
+
+      function setTextColorClass(color) {
+        coloredParagraph.classList.remove(
+          "text-green",
+          "text-blue",
+          "text-red",
+        );
+
+        if (color === "green") coloredParagraph.classList.add("text-green");
+        if (color === "blue") coloredParagraph.classList.add("text-blue");
+        if (color === "red") coloredParagraph.classList.add("text-red");
+      }
+
+      colorButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setTextColorClass(button.dataset.color);
+        });
+      });
+
+      //8
+
+      const movie = {
+        title: "Interstellar",
+        year: 2014,
+        genre: "Sci-Fi",
+        rating: 8.6,
+        director: "Christopher Nolan",
+      };
+
+      const movieInfo = document.querySelector("#movieInfo");
+
+      movieInfo.innerHTML = `
+    <div style="padding:10px 12px; background:#f7f7f7; border-radius:10px;">
+      <div><strong>Title:</strong> ${movie.title}</div>
+      <div><strong>Year:</strong> ${movie.year}</div>
+      <div><strong>Genre:</strong> ${movie.genre}</div>
+      <div><strong>Rating:</strong> ${movie.rating}</div>
+      <div><strong>Director:</strong> ${movie.director}</div>
+    </div>
+  `;
+
+      //9
+
+      const colors = ["red", "blue", "green"];
+      const btnNextColor = document.querySelector("#btnNextColor");
+      const cycleParagraph = document.querySelector("#cycleParagraph");
+      let colorIndex = 0;
+
+      btnNextColor.addEventListener("click", () => {
+        cycleParagraph.style.color = colors[colorIndex];
+        colorIndex = (colorIndex + 1) % colors.length;
+      });
+    </script>
+  </body>
+</html>
