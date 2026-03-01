@@ -23,6 +23,8 @@ console.log(parentElementMenu.lastElementChild);
 const imgSelector = document.querySelector('img');
 imgSelector.src = '/img/logo.png';
 imgSelector.alt = 'Logo';
+// imgSelector.setAttribute('src', '/img/logo.png');
+// imgSelector.setAttribute('alt', 'Logo');
 
 //6
 const newElementCreate = document.createElement('p');
@@ -35,7 +37,7 @@ const parentList = document.querySelector('.list');
 const itemList = document.createElement('li');
 itemList.textContent = 'New item';
 
-parentList.append(itemList);    
+parentList.append(itemList);
 parentList.prepend(itemList);
 
 const title = document.querySelector('h1');
