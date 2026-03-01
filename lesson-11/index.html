@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .dropdown {
+        margin-top: 10px;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        overflow: hidden;
+
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition:
+          max-height 0.35s ease,
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .dropdown.is-open {
+        max-height: 260px;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .item {
+        padding: 12px 14px;
+        border-top: 1px solid #f2f2f2;
+      }
+      .item:first-child {
+        border-top: none;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+      }
+      .grid img {
+        max-width: 100%;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+      .grid-item {
+        height: 400px;
+        width: 100%;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .close-modal {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #fff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .modal.is-open {
+        display: flex;
+        flex-direction: column;
+      }
+      .modal img {
+        max-width: min(1000px, 95vw);
+        max-height: 85vh;
+        border-radius: 14px;
+      }
+      .hint {
+        margin-top: 12px;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <div class="box" style="margin-bottom: 20px">
+    <div>Random bg color</div>
+    <div class="hint" id="colorText" style="height: 200px; width: 200px"></div>
+    <button id="btnColor">Change Random Color</button>
+  </div>
+  <div style="margin-bottom: 20px">
+    <div class="count" id="count">0</div>
+    <button id="btn">Click me</button>
+  </div>
+  <div class="wrap" style="margin-bottom: 20px">
+    <input id="textInput" placeholder="Enter the text and press Enter" />
+    <div class="list" id="textOutput"></div>
+  </div>
+  <div class="wrap" style="margin-bottom: 20px">
+    <div class="controls">
+      <button id="plusSizeText">+1px</button>
+      <button id="minusSizeText">-1px</button>
+    </div>
+    <div class="text" id="textSize">
+      This is text. Click the buttons to change the font size.
+    </div>
+    <div id="errorText"></div>
+  </div>
+  <div class="wrap" style="margin-bottom: 20px">
+    <button id="toggle">Open/Close</button>
+    <div class="dropdown" id="dropdown">
+      <div class="item">menu 1</div>
+      <div class="item">menu 2</div>
+      <div class="item">menu 3</div>
+      <div class="item">menu 4</div>
+    </div>
+  </div>
+  <div class="grid" id="grid">
+    <div
+      class="grid-item"
+      data-alt="img"
+      data-src-img="https://picsum.photos/id/1025/600/400"
+    >
+      <img src="https://picsum.photos/id/1025/600/400" alt="img2" />
+    </div>
+    <div
+      class="grid-item"
+      data-alt="img"
+      data-src-img="https://picsum.photos/id/1035/600/400"
+    >
+      <img src="https://picsum.photos/id/1035/600/400" alt="img3" />
+    </div>
+    <div
+      class="grid-item"
+      data-alt="img"
+      data-src-img="https://picsum.photos/id/1045/600/400"
+    >
+      <img src="https://picsum.photos/id/1045/600/400" alt="img4" />
+    </div>
+  </div>
+  <div class="modal" id="modal">
+    <div id="close-modal" class="close-modal">Close</div>
+    <div id="img-output"></div>
+  </div>
+  <body>
+    <script>
+      //1 An event handler is a function that is run in response to an event (mouse click, key press, text entry, hover, scroll, etc.). Example: when you do button.addEventListener('click', handler), the handler is the event handler.
+
+      //2
+      const colorText = document.querySelector("#colorText");
+      const buttonRandomColor = document.getElementById("btnColor");
+
+      buttonRandomColor.addEventListener("click", () => {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+
+        const colorChanged = `rgb(${r}, ${g}, ${b})`;
+
+        colorText.style.background = colorChanged;
+        colorText.textContent = colorChanged;
+      });
+
+      //3
+      const countClicnks = document.getElementById("count");
+      const buttonAddClick = document.getElementById("btn");
+
+      let count = 1;
+
+      buttonAddClick.addEventListener("click", function () {
+        countClicnks.textContent = count++;
+      });
+
+      //4
+      const inputText = document.querySelector("#textInput");
+      const outputText = document.querySelector("#textOutput");
+
+      inputText.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          const value = inputText.value.trim();
+          outputText.textContent = value;
+        }
+      });
+
+      //5 I skipped the task with CSS
+
+      //6
+
+      const plusSizeText = document.getElementById("plusSizeText");
+      const minusSizeText = document.getElementById("minusSizeText");
+      const textSize = document.getElementById("textSize");
+      const errorText = document.getElementById("errorText");
+
+      const MIN_FONT_SIZE = 10;
+      const MAX_FONT_SIZE = 60;
+
+      //Тут использовал ИИ ибо не получалось адекватно отловить текущий размер шрифта, впервые узнал про getComputedStyle функцию
+      function getFontSize(element) {
+        return parseInt(window.getComputedStyle(element).fontSize);
+      }
+
+      plusSizeText.addEventListener("click", function () {
+        const currentSize = getFontSize(textSize);
+        if (currentSize >= MAX_FONT_SIZE) {
+          errorText.textContent = "Maximum font size reached.";
+          return;
+        }
+        textSize.style.fontSize = `${currentSize + 1}px`;
+      });
+
+      minusSizeText.addEventListener("click", function () {
+        const currentSize = getFontSize(textSize);
+        if (currentSize <= MIN_FONT_SIZE) {
+          errorText.textContent = "Minimum font size reached.";
+          return;
+        }
+        textSize.style.fontSize = `${currentSize - 1}px`;
+      });
+
+      //7
+      const toggleMenuButton = document.querySelector("#toggle");
+      const dropdownMenu = document.querySelector("#dropdown");
+
+      toggleMenuButton.addEventListener("click", function () {
+        dropdownMenu.classList.toggle("is-open");
+      });
+
+      //8 Moved the task
+
+      //9
+      const wrapperImg = document.getElementById("grid");
+      const modalZoom = document.getElementById("modal");
+      const closeBtn = document.getElementById("close-modal");
+      const imgOutput = document.getElementById("img-output");
+
+      const zoomImage = document.createElement("img");
+      imgOutput.appendChild(zoomImage);
+
+      function openModal(src, alt) {
+        zoomImage.style.display = "block";
+        zoomImage.src = src;
+        zoomImage.alt = alt;
+        modalZoom.classList.add("is-open");
+      }
+
+      function closeModal() {
+        modalZoom.classList.remove("is-open");
+        zoomImage.src = "";
+        zoomImage.alt = "";
+        zoomImage.style.display = "none";
+      }
+
+      wrapperImg.addEventListener("click", function (event) {
+        const imgTaget = event.target.closest("img");
+        if (!imgTaget) return;
+
+        openModal(imgTaget.src, imgTaget.alt);
+      });
+
+      closeBtn.addEventListener("click", closeModal);
+    </script>
+  </body>
+</html>
