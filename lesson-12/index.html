@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test</title>
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    .section-title {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .links-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tooltip-link {
+      position: relative;
+      display: inline-block;
+      width: fit-content;
+      color: #1a73e8;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .tooltip-box {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      background: #222;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: 0.2s ease;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .tooltip-box.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .todo-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .todo-input {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .add-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      background: #1a73e8;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .todo-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .delete-btn {
+      border: none;
+      border-radius: 8px;
+      background: #e53935;
+      color: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .accordion-item {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .accordion-title {
+      width: 100%;
+      border: none;
+      background: #f0f0f0;
+      padding: 16px;
+      text-align: left;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .accordion-content {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid #eee;
+      background: #fff;
+    }
+
+    .accordion-item.active .accordion-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <section class="section">
+      <h2 class="section-title">1. Links with tooltip</h2>
+
+      <div class="links-box">
+        <a href="#" class="tooltip-link" data-tooltip-text="Go to the home page">Home</a>
+        <a href="#" class="tooltip-link" data-tooltip-text="Read more about our services">Services</a>
+        <a href="#" class="tooltip-link" data-tooltip-text="Open the contact section">Contacts</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">2. Todo list with delete button</h2>
+
+      <form class="todo-form" id="todoForm">
+        <input type="text" class="todo-input" id="todoInput" placeholder="Enter a new task">
+        <button type="submit" class="add-btn">Add</button>
+      </form>
+
+      <ul class="todo-list" id="todoList">
+        <li class="todo-item">
+          <span>Learn JavaScript</span>
+          <button class="delete-btn">Delete</button>
+        </li>
+        <li class="todo-item">
+          <span>Practice DOM</span>
+          <button class="delete-btn">Delete</button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">3. Accordion list</h2>
+
+      <div class="accordion" id="accordion">
+        <div class="accordion-item">
+          <button class="accordion-title">HTML</button>
+          <div class="accordion-content">
+            HTML is used to create the structure of a web page.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-title">CSS</button>
+          <div class="accordion-content">
+            CSS is used to style the elements on the page.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-title">JavaScript</button>
+          <div class="accordion-content">
+            JavaScript adds logic and interactivity to a web page.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const tooltipLinks = document.querySelectorAll('.tooltip-link');
+
+    tooltipLinks.forEach(link => {
+      const tooltipText = link.dataset.tooltipText;
+      const tooltip = document.createElement('div');
+
+      tooltip.className = 'tooltip-box';
+      tooltip.textContent = tooltipText;
+
+      link.appendChild(tooltip);
+
+      link.addEventListener('mouseenter', () => {
+        tooltip.classList.add('show');
+      });
+
+      link.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('show');
+      });
+    });
+
+    const todoForm = document.querySelector('#todoForm');
+    const todoInput = document.querySelector('#todoInput');
+    const todoList = document.querySelector('#todoList');
+
+    todoForm.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const taskText = todoInput.value.trim();
+
+      if (!taskText) {
+        return;
+      }
+
+      const todoItem = document.createElement('li');
+      todoItem.className = 'todo-item';
+      todoItem.innerHTML = `
+        <span>${taskText}</span>
+        <button class="delete-btn">Delete</button>
+      `;
+
+      todoList.appendChild(todoItem);
+      todoInput.value = '';
+    });
+
+    todoList.addEventListener('click', event => {
+      if (event.target.classList.contains('delete-btn')) {
+        const currentItem = event.target.closest('.todo-item');
+        currentItem.remove();
+      }
+    });
+
+    const accordion = document.querySelector('#accordion');
+
+    accordion.addEventListener('click', event => {
+      const currentButton = event.target.closest('.accordion-title');
+
+      if (!currentButton) {
+        return;
+      }
+
+      const currentItem = currentButton.closest('.accordion-item');
+      currentItem.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
