@@ -75,7 +75,9 @@
   })
 
   //Set all users to lacalStorage
-  usersList.forEach(setUserToStorage);
+  for (const user of usersList) {
+    setUserToStorage(user);
+  };
   // localStorage.setItem('name', 'John');
 
   const user = getUserById(1);
