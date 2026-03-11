@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<section>
+  <div class="container">
+
+
+    <a href="/" onclick="clickHandler(event)">
+      Some link
+    </a>
+
+    <form onsubmit="handleSubmit">
+      <input placeholder="Ваше імʼя" />
+      <button type="submit">Відправити</button>
+    </form>
+
+    <ul id="list">
+      <li>Item 1</li>
+    </ul>
+    <div class="controlls">
+      <button >Add</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  const usersList = [
+    {
+      id: 1,
+      name: 'John',
+      age: 30,
+    },
+    {
+      id: 2,
+      name: 'Jane',
+      age: 25,
+    },
+    {
+      id: 3,
+      name: 'Bob',
+      age: 40,
+    }
+  ]
+
+  const list = document.getElementById('list');
+
+  usersList.forEach(user => {
+    const li = document.createElement('li');
+    li.textContent = `${user.name} - ${user.age}`;
+    list.appendChild(li);
+  })
+  usersList.forEach(user => localStorage.setItem(user.id, JSON.stringify(user)));
+  // localStorage.setItem('name', 'John');
+
+  const getUserById = (id) =>  localStorage.getItem(id) ? JSON.parse(localStorage.getItem(id)) : null;
+  const deleteUserById = (id) =>  localStorage.removeItem(id);
+
+  const user = getUserById(1);
+
+
+  console.log('Initial user data: ', user);
+  deleteUserById(1)
+  console.log('After deleting user from localstorage: ', getUserById(1));
+
+
+
+  function clickHandler(event) {
+    event.preventDefault();
+    console.log('Link clicked!');
+  }
+
+
+
+  function handleSubmit(event) {
+    // event.preventDefault()
+
+    console.log(event);
+    alert('Форма оброблена JavaScript, сторінка не перезавантажилась')
+  }
+</script>
+</body>
+</html>
