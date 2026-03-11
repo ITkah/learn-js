@@ -73,7 +73,9 @@
     li.textContent = `${user.name} - ${user.age}`;
     list.appendChild(li);
   })
-  usersList.forEach(user => localStorage.setItem(user.id, JSON.stringify(user)));
+
+  //Set all users to lacalStorage
+  usersList.forEach(setUserToStorage);
   // localStorage.setItem('name', 'John');
 
   const user = getUserById(1);
@@ -95,6 +97,16 @@
 
     console.log(event);
     alert('Форма оброблена JavaScript, сторінка не перезавантажилась')
+  }
+
+  function setUserToStorage(user) {
+    if (!user) return
+
+    console.log(typeof user, user);
+    const userStorageKey = user.id.toString();
+    const formatedUserForStorage = JSON.stringify(user)
+    console.log(typeof formatedUserForStorage, formatedUserForStorage);
+    localStorage.setItem(userStorageKey, formatedUserForStorage)
   }
 
   function getUserById(id) {
