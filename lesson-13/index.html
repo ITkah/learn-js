@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+        transition: background-color 0.3s ease;
+      }
+
+      h1 {
+        margin-bottom: 24px;
+      }
+
+      .section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      .output {
+        margin-top: 12px;
+        padding: 12px;
+        background: #f0f0f0;
+        border-radius: 8px;
+        min-height: 44px;
+        font-size: 18px;
+      }
+
+      .keyboard {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .key-btn {
+        width: 60px;
+        height: 60px;
+        border: none;
+        border-radius: 10px;
+        background: #2d89ef;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          background 0.15s ease;
+      }
+
+      .key-btn:hover {
+        background: #1f6fcc;
+      }
+
+      .key-btn:active {
+        transform: scale(0.95);
+      }
+
+      .screen {
+        margin-top: 12px;
+        padding: 12px;
+        min-height: 50px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 24px;
+        background: #fafafa;
+        word-break: break-word;
+      }
+
+      .game-area {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        height: 300px;
+        border: 2px solid #333;
+        border-radius: 12px;
+        background: #fafafa;
+        overflow: hidden;
+        margin-top: 16px;
+      }
+
+      .square {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: crimson;
+        top: 20px;
+        left: 20px;
+        border-radius: 8px;
+      }
+
+      .hint {
+        color: #555;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section">
+      <h2>1. Press any key</h2>
+      <p>Press any key on the keyboard.</p>
+      <div class="output" id="pressedKeyOutput">
+        The pressed key will appear here
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2. Keyboard panel</h2>
+      <p>
+        Click the buttons on the panel and the symbols will appear on the
+        screen.
+      </p>
+      <div class="keyboard" id="keyboardPanel">
+        <button class="key-btn">1</button>
+        <button class="key-btn">2</button>
+        <button class="key-btn">3</button>
+        <button class="key-btn">+</button>
+        <button class="key-btn">-</button>
+      </div>
+      <div class="screen" id="keyboardScreen"></div>
+    </div>
+
+    <div class="section">
+      <h2>3. Change background color with keys R, G, B</h2>
+      <p>
+        Press:
+        <strong>R</strong> — red, <strong>G</strong> — green,
+        <strong>B</strong> — blue.
+      </p>
+      <div class="output" id="colorOutput">Current color: default</div>
+    </div>
+
+    <div class="section">
+      <h2>4. Move the square with W, A, S, D keys</h2>
+      <p>Use the W, A, S, D keys to move the square.</p>
+      <div class="hint">W — up, S — down, A — left, D — right</div>
+      <div class="game-area" id="gameArea">
+        <div class="square" id="square"></div>
+      </div>
+    </div>
+
+    <script>
+      const bodyDocument = document.body;
+
+      const pressedKeyOutput = document.querySelector("#pressedKeyOutput");
+      const keyboardPanel = document.querySelector("#keyboardPanel");
+      const keyboardScreen = document.querySelector("#keyboardScreen");
+      const colorOutput = document.querySelector("#colorOutput");
+      const square = document.querySelector("#square");
+
+      const redColor = "lightcoral";
+      const greenColor = "lightgreen";
+      const blueColor = "lightblue";
+
+      let squareTop = 20;
+      let squareLeft = 20;
+      const step = 20;
+
+      document.addEventListener("keydown", function (event) {
+        //1
+        pressedKeyOutput.textContent = `You pressed: ${event.key}`;
+
+        //3
+        const key = event.key.toLowerCase();
+
+        function changeBackgroundColor(color) {
+          bodyDocument.style.backgroundColor = color;
+          colorOutput.textContent = `Current color: ${color}`;
+        }
+
+        switch (key) {
+          case "r":
+            changeBackgroundColor(redColor);
+            break;
+          case "g":
+            changeBackgroundColor(greenColor);
+            break;
+          case "b":
+            changeBackgroundColor(blueColor);
+            break;
+        }
+
+        //4 Тут нагуглил решение, ибо сильно путался с координатами и с границами игровой области, немного переделал его ибо в примере куча if было
+        const maxTop = gameArea.clientHeight - square.clientHeight;
+        const maxLeft = gameArea.clientWidth - square.clientWidth;
+
+        switch (key) {
+          case "w":
+            squareTop -= step;
+            break;
+
+          case "s":
+            squareTop += step;
+            break;
+
+          case "a":
+            squareLeft -= step;
+            break;
+
+          case "d":
+            squareLeft += step;
+            break;
+        }
+
+        squareTop = Math.max(0, Math.min(squareTop, maxTop));
+        squareLeft = Math.max(0, Math.min(squareLeft, maxLeft));
+
+        square.style.top = `${squareTop}px`;
+        square.style.left = `${squareLeft}px`;
+      });
+
+      //2
+      keyboardPanel.addEventListener("click", function (event) {
+        const buttonPanel = event.target.closest(".key-btn");
+
+        if (!buttonPanel) return;
+
+        const valuePanel = buttonPanel.textContent.trim();
+
+        keyboardScreen.textContent += valuePanel;
+      });
+    </script>
+  </body>
+</html>
