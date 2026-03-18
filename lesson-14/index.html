@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizza Order</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        color: #222;
+        min-height: 100vh;
+        padding: 40px 16px;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .pizza-card {
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .pizza-title {
+        font-size: 32px;
+        margin-bottom: 10px;
+        text-align: center;
+        color: #d84315;
+      }
+
+      .pizza-subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 16px;
+      }
+
+      .pizza-form {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .form-label {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-size: 16px;
+        background-color: #fff;
+        outline: none;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .form-select:focus {
+        border-color: #ff7043;
+        box-shadow: 0 0 0 4px rgba(255, 112, 67, 0.15);
+      }
+
+      .ingredients-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .ingredient-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #fff3ed;
+        border: 1px solid #ffd5c8;
+        border-radius: 12px;
+        padding: 12px 14px;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .ingredient-item:hover {
+        transform: translateY(-2px);
+        border-color: #ff7043;
+      }
+
+      .ingredient-item input {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .ingredient-text {
+        font-size: 15px;
+      }
+
+      .order-button {
+        border: none;
+        border-radius: 14px;
+        background-color: #d84315;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 16px 20px;
+        cursor: pointer;
+        transition:
+          background-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .order-button:hover {
+        background-color: #bf360c;
+        transform: translateY(-2px);
+      }
+
+      .result-box {
+        margin-top: 28px;
+        padding: 20px;
+        border-radius: 16px;
+        background-color: #fff8f4;
+        border: 1px solid #ffd9cc;
+      }
+
+      .result-title {
+        font-size: 22px;
+        margin-bottom: 14px;
+        color: #d84315;
+      }
+
+      .result-text {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 8px;
+      }
+
+      @media (max-width: 600px) {
+        .pizza-card {
+          padding: 22px;
+        }
+
+        .pizza-title {
+          font-size: 26px;
+        }
+
+        .form-label {
+          font-size: 16px;
+        }
+
+        .order-button {
+          font-size: 16px;
+        }
+      }
+      .error-messages {
+        font-size: 16px;
+        font-weight: bold;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="pizza-card">
+        <h1 class="pizza-title">Pizza Order</h1>
+        <p class="pizza-subtitle">
+          Choose your pizza, size, and extra ingredients
+        </p>
+
+        <form class="pizza-form">
+          <div class="form-group">
+            <label class="form-label" for="pizzaType">Pizza Type</label>
+            <select class="form-select" id="pizzaType" name="pizzaType">
+              <option value="">Choose a pizza</option>
+              <option value="margarita">Margarita</option>
+              <option value="pepperoni">Pepperoni</option>
+              <option value="hawaiian">Hawaiian</option>
+              <option value="fourCheese">Four Cheese</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pizzaSize">Pizza Size</label>
+            <select class="form-select" id="pizzaSize" name="pizzaSize">
+              <option value="">Choose a size</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <p class="form-label">Extra Ingredients (optional)</p>
+
+            <div class="ingredients-list">
+              <label class="ingredient-item">
+                <input type="checkbox" name="ingredient" value="mushrooms" />
+                <span class="ingredient-text">Mushrooms</span>
+              </label>
+
+              <label class="ingredient-item">
+                <input type="checkbox" name="ingredient" value="salami" />
+                <span class="ingredient-text">Salami</span>
+              </label>
+
+              <label class="ingredient-item">
+                <input type="checkbox" name="ingredient" value="olives" />
+                <span class="ingredient-text">Olives</span>
+              </label>
+
+              <label class="ingredient-item">
+                <input type="checkbox" name="ingredient" value="extraCheese" />
+                <span class="ingredient-text">Extra Cheese</span>
+              </label>
+
+              <label class="ingredient-item">
+                <input type="checkbox" name="ingredient" value="bacon" />
+                <span class="ingredient-text">Bacon</span>
+              </label>
+
+              <label class="ingredient-item">
+                <input type="checkbox" name="ingredient" value="corn" />
+                <span class="ingredient-text">Corn</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="order-button" type="button">Order Now</button>
+          <p class="error-messages"></p>
+        </form>
+
+        <div class="result-box">
+          <h2 class="result-title">Your Order</h2>
+          <p class="result-text type-pizza">Pizza: —</p>
+          <p class="result-text size-pizza">Size: —</p>
+          <p class="result-text ingredients-pizza">Ingredients: —</p>
+          <p class="result-text price-pizza">Total Price: —</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      const pizzaTypeSelect = document.getElementById("pizzaType");
+      const pizzaSizeSelect = document.getElementById("pizzaSize");
+      const ingredientCheckboxes = document.querySelectorAll(
+        'input[name="ingredient"]',
+      );
+      const orderButton = document.querySelector(".order-button");
+
+      const resultBox = document.querySelector(".result-box");
+      const resultPizza = resultBox.querySelector(".type-pizza");
+      const resultSize = resultBox.querySelector(".size-pizza");
+      const resultIngredients = resultBox.querySelector(".ingredients-pizza");
+      const resultPrice = resultBox.querySelector(".price-pizza");
+
+      const errorMessages = document.querySelector(".error-messages");
+
+      const errorTexts = {
+        pizzaType: "Please select a pizza type.",
+        pizzaSize: "Please select a pizza size.",
+      };
+
+      const menuData = {
+        pizzas: {
+          margarita: {
+            label: "Margarita",
+            price: 8,
+          },
+          pepperoni: {
+            label: "Pepperoni",
+            price: 10,
+          },
+          hawaiian: {
+            label: "Hawaiian",
+            price: 9,
+          },
+          fourCheese: {
+            label: "Four Cheese",
+            price: 11,
+          },
+        },
+        sizes: {
+          small: {
+            label: "Small",
+            multiplier: 1,
+          },
+          medium: {
+            label: "Medium",
+            multiplier: 1.5,
+          },
+          large: {
+            label: "Large",
+            multiplier: 2,
+          },
+        },
+        ingredients: {
+          mushrooms: {
+            label: "Mushrooms",
+            price: 1,
+          },
+          salami: {
+            label: "Salami",
+            price: 1.5,
+          },
+          olives: {
+            label: "Olives",
+            price: 1,
+          },
+          extraCheese: {
+            label: "Extra Cheese",
+            price: 2,
+          },
+          bacon: {
+            label: "Bacon",
+            price: 1.5,
+          },
+          corn: {
+            label: "Corn",
+            price: 0.5,
+          },
+        },
+      };
+
+      function renderErrorMessage(typeError) {
+        errorMessages.textContent = typeError;
+      }
+
+      function clearErrorMessage() {
+        errorMessages.textContent = "";
+      }
+
+      orderButton.addEventListener("click", function () {
+        const selectedPizzaType = pizzaTypeSelect.value;
+        const selectedPizzaSize = pizzaSizeSelect.value;
+
+        //тут загуглил метод, ибо не понимал как лучше сделать
+        const selectedIngredients = Array.from(ingredientCheckboxes)
+          .filter((checkbox) => checkbox.checked)
+          .map((checkbox) => checkbox.value);
+
+        if (!selectedPizzaType) {
+          renderErrorMessage(errorTexts.pizzaType);
+          return;
+        }
+
+        if (!selectedPizzaSize) {
+          renderErrorMessage(errorTexts.pizzaSize);
+          return;
+        }
+
+        clearErrorMessage();
+
+        const pizzaChoice = menuData.pizzas[selectedPizzaType];
+        const sizeChoice = menuData.sizes[selectedPizzaSize];
+
+        let totalPrice = pizzaChoice.price * sizeChoice.multiplier;
+
+        //вот тут уже гуглил сильно, ибо немного запутался + ИИ
+        const ingredientChoices= selectedIngredients.map((ingredient) => {
+          const ingredientData = menuData.ingredients[ingredient];
+          totalPrice += ingredientData.price;
+          return ingredientData.label;
+        });
+
+        resultPizza.textContent = `Pizza: ${pizzaChoice.label}`;
+        resultSize.textContent = `Size: ${sizeChoice.label}`;
+        resultIngredients.textContent = `Ingredients: ${ingredientChoices.join(", ") || "Not selected"}`;
+        resultPrice.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+      });
+    </script>
+  </body>
+</html>
