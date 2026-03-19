@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      #target {
+        font-size: 24px;
+        margin-bottom: 20px;
+        transition: color 0.3s ease;
+      }
+
+      .fade-box {
+        width: 200px;
+        padding: 20px;
+        background: lightblue;
+        margin: 20px 0;
+        opacity: 1;
+        transition: opacity 2s ease;
+      }
+
+      .fade-out {
+        opacity: 0;
+      }
+
+      button {
+        padding: 10px 16px;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+
+      .log {
+        margin-top: 10px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <h2>2. Change color after 5 seconds</h2>
+  <div id="target">This text will turn red in 5 seconds</div>
+
+  <h2>3. Prevent double click</h2>
+  <button id="safeButton">Click me</button>
+  <div class="log" id="buttonMessage"></div>
+
+  <h2>4. Smooth fade-out animation</h2>
+  <div class="fade-box" id="fadeBox">I will fade out in 2 seconds</div>
+  <button id="fadeButton">Start fade out</button>
+
+  <h2>5. Delay animation</h2>
+  <div class="log" id="counterMessage"></div>
+
+  <body>
+    <script>
+      // 1
+      // setInterval(() => {
+      //   alert('Hello World');
+      // }, 2000);
+
+      // 2
+      const target = document.getElementById("target");
+      setTimeout(() => {
+        target.style.color = "red";
+      }, 5000);
+
+      // 3
+      const safeButton = document.getElementById("safeButton");
+      const buttonMessage = document.getElementById("buttonMessage");
+
+      safeButton.addEventListener("click", () => {
+        if (safeButton.disabled) {
+          return;
+        }
+
+        buttonMessage.textContent = "Button clicked";
+        safeButton.disabled = true;
+
+        setTimeout(() => {
+          safeButton.disabled = false;
+          buttonMessage.textContent = "Button is active again";
+        }, 2000);
+      });
+
+      // 4
+      const fadeBox = document.getElementById("fadeBox");
+      const fadeButton = document.getElementById("fadeButton");
+
+      fadeButton.addEventListener("click", () => {
+        fadeBox.classList.add("fade-out");
+      });
+
+      // 5
+      const counterMessage = document.getElementById("counterMessage");
+      let count = 1;
+
+      const intervalId = setInterval(() => {
+        counterMessage.textContent = `${count}...`;
+        count++;
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(intervalId);
+        counterMessage.textContent = "Animation stopped";
+      }, 5000);
+    </script>
+  </body>
+</html>
