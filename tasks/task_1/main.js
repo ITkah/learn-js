@@ -7,6 +7,9 @@ const products = [
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+
+
+
 // ### ✍️ Завдання для учня — написати в script.js:
 //
 // **1. `Функцію, яка для кожного товару з масиву `products` динамічно створює і додає в `#products` блок вигляду:

@@ -1,22 +1,165 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Магазин</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Каталог товарів</h1>
+    <div id="products"></div>
 
-<h1>Каталог товарів</h1>
-<div id="products"></div>
+    <h2>🛒 Кошик</h2>
+    <div id="cart">
+      <p id="empty-msg">Кошик порожній</p>
+      <ul id="cart-list"></ul>
+      <p id="total"></p>
+    </div>
 
-<h2>🛒 Кошик</h2>
-<div id="cart">
-    <p id="empty-msg">Кошик порожній</p>
-    <ul id="cart-list"></ul>
-    <p id="total"></p>
-</div>
+    <script>
+      const products = [
+        { id: 1, name: "Навушники Sony", price: 1200 },
+        { id: 2, name: "Чохол для iPhone", price: 350 },
+        { id: 3, name: "USB-кабель", price: 150 },
+        { id: 4, name: "Павербанк 10000 mAh", price: 890 },
+      ];
 
-<script src="./main.js"></script>
-</body>
+      const productsContainer = document.getElementById("products");
+      const cartList = document.getElementById("cart-list");
+      const emptyMsg = document.getElementById("empty-msg");
+      const totalCart = document.getElementById("total");
+
+      function isValidCartItem(item) {
+        return (
+          item &&
+          typeof item.id === "number" &&
+          typeof item.name === "string" &&
+          typeof item.price === "number" &&
+          typeof item.quantity === "number"
+        );
+      }
+
+      function getCartFromStorage() {
+        try {
+          const savedCart = JSON.parse(localStorage.getItem("cart"));
+          return Array.isArray(savedCart)
+            ? savedCart.filter(isValidCartItem)
+            : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      let cart = getCartFromStorage();
+
+      function saveCart() {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+
+      function renderProducts() {
+        productsContainer.innerHTML = "";
+
+        if (!products.length) {
+          productsContainer.innerHTML = "<p>Товари відсутні</p>";
+          return;
+        }
+
+        const fragmentGoods = document.createDocumentFragment();
+
+        for (const product of products) {
+          const productItem = document.createElement("div");
+          productItem.className = "product";
+
+          productItem.innerHTML = `
+        <span>${product.name}</span>
+        <span>${product.price} грн</span>
+        <button data-id="${product.id}">Додати до кошика</button>
+      `;
+
+          fragmentGoods.appendChild(productItem);
+        }
+
+        productsContainer.appendChild(fragmentGoods);
+      }
+
+      function renderCart() {
+        cartList.innerHTML = "";
+
+        if (!cart.length) {
+          emptyMsg.style.display = "block";
+          cartList.style.display = "none";
+          totalCart.textContent = "";
+          return;
+        }
+
+        emptyMsg.style.display = "none";
+        cartList.style.display = "block";
+
+        const fragmentCart = document.createDocumentFragment();
+        let totalPrice = 0;
+
+        for (const item of cart) {
+          const cartItem = document.createElement("li");
+          const itemTotal = item.price * item.quantity;
+          totalPrice += itemTotal;
+
+          cartItem.innerHTML = `
+        ${item.name} — ${item.price} грн × ${item.quantity} = ${itemTotal} грн
+        <button data-id="${item.id}">Видалити</button>
+      `;
+
+          fragmentCart.appendChild(cartItem);
+        }
+
+        cartList.appendChild(fragmentCart);
+        totalCart.textContent = `Загальна сума: ${totalPrice} грн`;
+      }
+
+      function addToCart(productId) {
+        const product = products.find((item) => item.id === productId);
+
+        if (!product) return;
+
+        const cartItem = cart.find((item) => item.id === productId);
+
+        if (cartItem) {
+          cartItem.quantity += 1;
+        } else {
+          cart.push({ ...product, quantity: 1 });
+        }
+
+        saveCart();
+        renderCart();
+      }
+
+      function removeFromCart(productId) {
+        cart = cart.filter((item) => item.id !== productId);
+        saveCart();
+        renderCart();
+      }
+
+      productsContainer.addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (!button) return;
+
+        const id = Number(button.dataset.id);
+        if (!id) return;
+
+        addToCart(id);
+      });
+
+      cartList.addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (!button) return;
+
+        const id = Number(button.dataset.id);
+        if (!id) return;
+
+        removeFromCart(id);
+      });
+
+      renderProducts();
+      renderCart();
+    </script>
+  </body>
 </html>
