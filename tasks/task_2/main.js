@@ -55,6 +55,16 @@ const users = [
     name: "Bob Smith",
     email: "bob@gmail.com",
   },
+  {
+    id: 4,
+    name: "Alice Smith",
+    email: "alice@gmail.com",
+  },
+  {
+    id: 5,
+    name: "Ron Smith",
+    email: "ron@gmail.com",
+  },
 ];
 
 let counter = 0;
@@ -62,45 +72,78 @@ let counter = 0;
 //написать функцию которая будет отправлять юзеров методом Post на сервер по очереди
 
 async function main() {
-  console.log("Starting to send users to server...");
-  await sendUsersParallel(users);
-  console.log("All users have been sent to server.");
+  //console.log("Starting to send users to server...");
+  //await sendUsersParallel(users);
+  //console.log("All users have been sent to server.");
+  await postUser(users);
 }
 
-async function fetchUserParallel(user) {
-  const response = await fetch(`${SERVER_BASE_URL}users`, {
-    body: JSON.stringify(user),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Request failed ${response.status}: ${errorText}`);
+async function postUser(user) {
+  if (Array.isArray(user)) {
+    const results = [];
+    for (const item of user) {
+      results.push(await postUser(item));
+    }
+    return results;
   }
 
-  const data = await response.json();
-  console.log(`User sent: ${user.name}`, data);
-  return { ...data, status: response.status };
-}
+  try {
+    const response = await fetch(`${SERVER_BASE_URL}users`, {
+      body: JSON.stringify(user),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-async function sendUsersParallel(usersList = []) {
-  const promises = usersList.map(async (user) => {
-    try {
-      console.log(`Sending user: ${user.name} to server...`);
-      return await fetchUserParallel(user);
-    } catch (error) {
-      console.error(`Error occurred while sending user: ${user.name}`, error);
-      return null;
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Request failed ${response.status}: ${errorText}`);
     }
-  });
 
-  const results = await Promise.all(promises);
-  console.log("Parallel send completed", results);
-  return results;
+    const data = await response.json();
+    console.log(`User sent: ${user.name}`, data);
+    return { ...data, status: response.status };
+  } catch (error) {
+    console.error(`Error occurred while sending user: ${user.name}`, error);
+    return null;
+  }
 }
+
+// async function fetchUserParallel(user) {
+//   const response = await fetch(`${SERVER_BASE_URL}users`, {
+//     body: JSON.stringify(user),
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+
+//   if (!response.ok) {
+//     const errorText = await response.text();
+//     throw new Error(`Request failed ${response.status}: ${errorText}`);
+//   }
+
+//   const data = await response.json();
+//   console.log(`User sent: ${user.name}`, data);
+//   return { ...data, status: response.status };
+// }
+
+// async function sendUsersParallel(usersList = []) {
+//   const promises = usersList.map(async (user) => {
+//     try {
+//       console.log(`Sending user: ${user.name} to server...`);
+//       return await fetchUserParallel(user);
+//     } catch (error) {
+//       console.error(`Error occurred while sending user: ${user.name}`, error);
+//       return null;
+//     }
+//   });
+
+//   const results = await Promise.all(promises);
+//   console.log("Parallel send completed", results);
+//   return results;
+// }
 
 main();
 
